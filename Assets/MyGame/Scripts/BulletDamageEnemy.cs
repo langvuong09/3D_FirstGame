@@ -28,14 +28,20 @@ public class BulletDamageEnemy : MonoBehaviour
 
     private void CreateExplusionEffect(Collision objectHit)
     {
-        Instantiate(explusionPrefabs, transform.position, Quaternion.identity);
+        Destroy(objectHit.gameObject);
+        Instantiate(GameRefences.Instance.explutionPrefabs, transform.position, Quaternion.identity);
+        AudioSource audio = objectHit.gameObject.GetComponent<AudioSource>();
+        if(audio != null)
+        {
+            audio.Play();
+        }
         Destroy(gameObject);
     }
 
     private void CreateBulletImpactEffect(Collision objectHit)
     {
         ContactPoint contactPoint = objectHit.contacts[0];
-        GameObject hole = Instantiate(fx, contactPoint.point, Quaternion.LookRotation(contactPoint.normal));
+        GameObject hole = Instantiate(GameRefences.Instance.fxBulletsPrefabs, contactPoint.point, Quaternion.LookRotation(contactPoint.normal));
         hole.transform.SetParent(objectHit.gameObject.transform);
     }
 }
